@@ -1,0 +1,1 @@
+export type ScanStatus = 'PENDING' | 'IN_PROGRESS' | 'SUCCESS' | 'ABORTED';
