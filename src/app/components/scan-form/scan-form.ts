@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, inject, Output } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, inject, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ScanApiService } from '../../services/scan-api';
 
@@ -11,6 +11,7 @@ import { ScanApiService } from '../../services/scan-api';
 })
 export class ScanForm {
   private scanApiService = inject(ScanApiService);
+  private changeDetectionRef = inject(ChangeDetectorRef);
   
   websiteUrl = '';
   isLoading = false;
@@ -18,36 +19,41 @@ export class ScanForm {
   
   @Output() scanStarted = new EventEmitter<number>();
 
-  onStartScan() {
-    let url = this.websiteUrl.trim();
-    if (!url) return;
-
-    if (!url.startsWith('http://') && !url.startsWith('https://')) {
-      url = `https://${url}`; // ToDo Címek ellenőrzése (hibás esetén ne legyen http 500)
-   }
-
-    this.isLoading = true;
-    this.errorMessage = '';
-
-    this.scanApiService.createScan(url).subscribe({
-      next: (createdScan) => {
-        this.scanApiService.startScan(createdScan.id).subscribe({
-          next: () => {
-            this.isLoading = false;
-            this.scanStarted.emit(createdScan.id);
-          },
-          error: (err) => {
-            this.isLoading = false;
-            this.errorMessage = 'Hiba történt a szkennelés elindításakor!';
-            console.error(err);
-          }
-        });
-      },
-      error: (err) => {
-        this.isLoading = false;
-        this.errorMessage = 'Hiba történt az adatbázisba való mentés közben!';
-        console.error(err);
+  onStartScan(event?: Event) {
+      if(event) {
+        event.preventDefault();
       }
-    })
-  }
+
+      let url = this.websiteUrl.trim();
+      if (!url) return;
+
+      if (!url.startsWith('http://') && !url.startsWith('https://')) {
+        url = `https://${url}`;
+      }
+
+      this.isLoading = true;
+      this.errorMessage = '';
+
+      this.scanApiService.createScan(url).subscribe({
+        next: (createdScan) => {
+          this.scanApiService.startScan(createdScan.id).subscribe({
+            next: () => {
+              this.isLoading = false;
+              this.scanStarted.emit(createdScan.id);
+              this.changeDetectionRef.detectChanges();
+            },
+            error: (err) => {
+            this.isLoading = false;
+            this.errorMessage = err.error?.message || 'Hiba történt a szkennelés elindításakor!';
+            this.changeDetectionRef.detectChanges();
+            } 
+          });
+        },
+        error: (err) => {
+          this.isLoading = false;
+          this.errorMessage = err.error?.message || 'A megadott URL érvénytelen vagy nem menthető!';
+          this.changeDetectionRef.detectChanges();
+        }
+      });
+    }
 }

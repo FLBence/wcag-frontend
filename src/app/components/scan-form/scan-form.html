@@ -36,13 +36,14 @@
     }
     </button>
 
-    @if (errorMessage) {
-  <div
-    class="p-3 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm flex items-center gap-1.5"
-    role="alert"
-  >
-    <span class="font-bold">Hiba:</span>
-    <span>{{ errorMessage }}</span>
+  @if (errorMessage) {
+  <div class="mb-4 flex items-center justify-between rounded-lg border border-red-300 bg-red-100 p-4 text-sm text-red-700" role="alert">
+    <div>
+      <span class="font-bold">Hiba:</span> {{ errorMessage }}
+    </div>
+    <button (click)="errorMessage = ''" type="button" class="ml-auto pl-4 font-bold text-red-700 hover:text-red-900 focus:outline-none">
+      X
+    </button>
   </div>
 }
   </form>
