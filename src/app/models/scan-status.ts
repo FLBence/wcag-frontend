@@ -1,1 +1,6 @@
-export type ScanStatus = 'PENDING' | 'IN_PROGRESS' | 'SUCCESS' | 'ABORTED';
+export enum ScanStatus {
+  PENDING = 'PENDING',
+  IN_PROGRESS = 'IN_PROGRESS',
+  COMPLETED = 'COMPLETED',
+  ABORTED = 'ABORTED'
+}

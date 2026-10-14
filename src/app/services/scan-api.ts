@@ -12,6 +12,7 @@ export class ScanApiService {
     private httpClient = inject(HttpClient);
     private baseUrl = 'http://localhost:8080/api/scans';
 
+
     createScan(websiteUrl: string): Observable<ScanResponse> {
         return this.httpClient.post<ScanResponse>(this.baseUrl, {websiteUrl})
     }
@@ -32,7 +33,7 @@ export class ScanApiService {
         return timer(0,1000).pipe(
             switchMap(() => this.getScanStatus(scanId)),
             takeWhile(
-                scan => scan.status === 'PENDING' || scan.status === 'IN_PROGRESS',
+                scan => scan.status === ScanStatus.PENDING || scan.status === ScanStatus.IN_PROGRESS,
                 true
             )
         );

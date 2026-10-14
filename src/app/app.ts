@@ -1,9 +1,9 @@
 import { CommonModule } from '@angular/common';
 import { Component, signal } from '@angular/core';
-import { ScanForm } from './components/scan-form/scan-form';
+import { RouterOutlet } from '@angular/router';
 
 @Component({
-  imports: [CommonModule, ScanForm],
+  imports: [CommonModule, RouterOutlet],
   selector: 'app-root',
   styleUrl: './app.css',
   templateUrl: './app.html',
