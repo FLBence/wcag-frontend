@@ -1,7 +1,7 @@
 import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
 import { ScanApiService } from '../../services/scan-api';
 import { ActivatedRoute } from '@angular/router';
-import { ScanResultResponse } from '../../models/scan-result-response';
+import { ScanResultResponseDto } from '../../models/scan-result-response-dto';
 import { ErrorLevel } from '../../models/error-level';
 import { NgClass } from '@angular/common';
 @Component({
@@ -15,7 +15,7 @@ export class ScanResults implements OnInit{
   private changeDetectionRef = inject(ChangeDetectorRef);
   private activatedRoute = inject(ActivatedRoute);
 
-  scanResult: ScanResultResponse[] | null = null;
+  scanResult: ScanResultResponseDto[] | null = null;
   private isLoading = true;
   private errorMessage = '';
   private expandedRowIds = new Set<number>();

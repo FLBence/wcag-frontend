@@ -2,8 +2,8 @@ import { HttpClient } from "@angular/common/http";
 import { inject, Injectable } from "@angular/core";
 import { Observable, switchMap, takeWhile, timer } from "rxjs";
 import { ScanStatus } from "../models/scan-status";
-import { ScanResponse } from "../models/scan-response";
-import { ScanResultResponse } from "../models/scan-result-response";
+import { ScanResponseDto } from "../models/scan-response-dto";
+import { ScanResultResponseDto } from "../models/scan-result-response-dto";
 
 @Injectable({
     providedIn: 'root'
@@ -13,23 +13,23 @@ export class ScanApiService {
     private baseUrl = 'http://localhost:8080/api/scans';
 
 
-    createScan(websiteUrl: string): Observable<ScanResponse> {
-        return this.httpClient.post<ScanResponse>(this.baseUrl, {websiteUrl})
+    createScan(websiteUrl: string): Observable<ScanResponseDto> {
+        return this.httpClient.post<ScanResponseDto>(this.baseUrl, {websiteUrl})
     }
 
     startScan(scanId: number): Observable<string> {
         return this.httpClient.post(`${this.baseUrl}/${scanId}/start`, {}, { responseType: 'text'});
     }
 
-    getScanStatus(scanId: number): Observable<ScanResponse> {
-        return this.httpClient.get<ScanResponse>(`${this.baseUrl}/${scanId}`);
+    getScanStatus(scanId: number): Observable<ScanResponseDto> {
+        return this.httpClient.get<ScanResponseDto>(`${this.baseUrl}/${scanId}`);
     }
 
-    getScanResults(scanId: number): Observable<ScanResultResponse[]> {
-        return this.httpClient.get<ScanResultResponse[]>(`${this.baseUrl}/${scanId}/results`);
+    getScanResults(scanId: number): Observable<ScanResultResponseDto[]> {
+        return this.httpClient.get<ScanResultResponseDto[]>(`${this.baseUrl}/${scanId}/results`);
     }
 
-    currentScanStatus(scanId: number): Observable<ScanResponse> {
+    currentScanStatus(scanId: number): Observable<ScanResponseDto> {
         return timer(0,1000).pipe(
             switchMap(() => this.getScanStatus(scanId)),
             takeWhile(

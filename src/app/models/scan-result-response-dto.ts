@@ -1,6 +1,6 @@
 import { ErrorLevel } from "./error-level";
 
-export interface ScanResultResponse {
+export interface ScanResultResponseDto {
     id: number;
     targetSelector: string;
     htmlElement: string;

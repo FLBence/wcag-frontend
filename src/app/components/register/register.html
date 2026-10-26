@@ -1,0 +1,136 @@
+<div class="max-w-xl mx-auto p-6 bg-white dark:bg-gray-800 rounded-xl shadow-md border border-gray-100 dark:border-gray-700 mb-8 transition-colors">
+  <h2 class="text-xl font-bold text-gray-800 dark:text-gray-100 mb-4">
+    Regisztráció
+  </h2>
+
+<form #registrationForm="ngForm" (ngSubmit)="onRegister()" (submit)="$event.preventDefault();" class="flex flex-col gap-4">
+    <div>
+      <label for="userName" class="block text-sm font-semibold text-gray-800 dark:text-gray-200 mb-1">
+        Felhasználónév:
+      </label>
+      <input
+        type="text"
+        id="userName"
+        name="userName"
+        [ngModel]="username()"
+        (ngModelChange)="username.set($event)"
+        [required]="username()"
+        [minlength]="5"
+        [maxlength]="50"
+        #usernameModel="ngModel"
+        placeholder="Adja meg a felhasználó nevét"
+        class="w-full px-4 py-2.5 border border-gray-300 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition disabled:bg-gray-100 dark:disabled:bg-gray-900/50 disabled:cursor-not-allowed text-gray-800 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 bg-white dark:bg-gray-900"
+      />
+      @if (usernameModel.invalid && (usernameModel.dirty || usernameModel.touched)) {
+          <div class="text-red-500 text-xs mt-1 space-y-0.5">
+              @if (usernameModel.errors?.['required']) {
+                  <p>A felhasználónév megadása kötelező.</p>
+              }
+              @if (usernameModel.errors?.['minlength']) {
+                  <p>A felhasználónévnek legalább 5 karakter hosszúnak kell lennie.</p>
+              }
+              @if (usernameModel.errors?.['maxlength']) {
+                  <p>A felhasználónév legfeljebb 50 karakter lehet.</p>
+              }
+          </div>
+      }
+      <label for="email" class="block text-sm font-semibold text-gray-800 dark:text-gray-200 mb-1 mt-2">
+        E-mail cím:
+      </label>
+      <input
+        type="text"
+        id="email"
+        name="email"
+        [ngModel]="email()"
+        (ngModelChange)="email.set($event)"
+        [required]="email()"
+        [minlength]="10"
+        [maxlength]="30"
+        #emailModel="ngModel"
+        placeholder="pelda@emial.com"
+        class="w-full px-4 py-2.5 border border-gray-300 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition disabled:bg-gray-100 dark:disabled:bg-gray-900/50 disabled:cursor-not-allowed text-gray-800 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 bg-white dark:bg-gray-900"
+      />
+      @if (emailModel.invalid && (emailModel.dirty || emailModel.touched)) {
+          <div class="text-red-500 text-xs mt-1 space-y-0.5">
+              @if (emailModel.errors?.['required']) {
+                  <p>Az e-mail cím megadása kötelező.</p>
+              }
+              @if (emailModel.errors?.['email']) {
+                  <p>Kérjük, adjon meg egy érvényes e-mail címet.</p>
+              }
+              @if (emailModel.errors?.['maxlength']) {
+                  <p>Az e-mail cím legfeljebb 30 karakter lehet.</p>
+              }
+          </div>
+      }
+      <label for="password" class="block text-sm font-semibold text-gray-800 dark:text-gray-200 mb-1 mt-2">
+        Jelszó:
+      </label>
+       <div class="relative flex items-center w-full border border-gray-300 dark:border-gray-700 rounded-lg focus-within:ring-2 focus-within:ring-blue-500 focus-within:border-blue-500 bg-white dark:bg-gray-900 transition">
+          <input 
+              [type]="isPasswordVisible() ? 'text' : 'password'" 
+              id="password"
+              name="password"
+              [ngModel]="password()"
+              (ngModelChange)="password.set($event)"
+              [required]="password()"
+              [minlength]="5"
+              [maxlength]="50"
+              #passwordModel="ngModel"
+              placeholder="Adja meg jelszavát"
+              class="w-full bg-transparent border-none py-2.5 pl-4 pr-12 text-gray-800 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-0"
+          >
+          <button 
+              type="button" 
+              (click)="togglePasswordVisibility()"
+              class="absolute right-3 bg-transparent border-none cursor-pointer text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 flex items-center justify-center p-1 focus:outline-none"
+              [attr.aria-label]="isPasswordVisible() ? 'Jelszó elrejtése' : 'Jelszó mutatása'"
+          >
+              @if (isPasswordVisible()) {
+                  <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 stroke-current" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M10.733 5.076a10.744 10.744 0 0 1 11.205 6.575 1 1 0 0 1 0 .696 10.747 10.747 0 0 1-1.444 2.49"></path>
+                      <path d="M14.084 14.158a3 3 0 0 1-4.242-4.242"></path>
+                      <path d="M17.479 17.499a10.75 10.75 0 0 1-15.417-5.151 1 1 0 0 1 0-.696 10.75 10.75 0 0 1 4.446-5.143"></path>
+                      <path d="m2 2 20 20"></path>
+                  </svg>
+              } @else {
+                  <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 stroke-current" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"></path>
+                      <circle cx="12" cy="12" r="3"></circle>
+                  </svg>
+              }
+          </button>
+        </div>
+        @if (passwordModel.invalid && (passwordModel.dirty || passwordModel.touched)) {
+          <div class="text-red-500 text-xs mt-1 space-y-0.5">
+              @if (passwordModel.errors?.['required']) {
+                  <p>A jelszó megadása kötelező.</p>
+              }
+              @if (passwordModel.errors?.['minlength']) {
+                  <p>A jelszónak legalább 5 karakter hosszúnak kell lennie.</p>
+              }
+              @if (passwordModel.errors?.['maxlength']) {
+                  <p>A jelszó legfeljebb 50 karakter lehet.</p>
+              }
+          </div>
+        }
+    </div>
+
+    @if (successMessage) {
+        <p class="text-green-600 text-sm font-medium text-center">{{ successMessage }}</p>
+    }
+    @if (errorMessage) {
+        <p class="text-red-600 text-sm font-medium text-center">{{ errorMessage }}</p>
+    }
+
+    <button
+      type="submit"
+      [disabled]="registrationForm.invalid"
+      class="w-full bg-blue-600 hover:bg-blue-700 dark:bg-blue-600 dark:hover:bg-blue-700 text-white font-semibold py-2.5 px-4 rounded-lg transition duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 shadow-sm"
+    >
+      <span>
+        Regisztrálás
+      </span>
+    </button>
+</form>
+</div>

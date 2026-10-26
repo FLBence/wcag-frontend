@@ -1,6 +1,6 @@
 import { ScanStatus } from "./scan-status";
 
-export interface ScanResponse {
+export interface ScanResponseDto {
     id: number;
     status: ScanStatus;
     websiteUrl: string;
