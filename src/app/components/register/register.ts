@@ -18,31 +18,34 @@ export class Register {
   email = signal('');
   password = signal('');
 
-  errorMessage = '';
-  successMessage = '';
+  errorMessage = signal('');
+  successMessage = signal('');
 
   togglePasswordVisibility(): void {
     this.isPasswordVisible.update(value => !value);
   }
 
-  onRegister(): void{
-    const registerDto: RegisterDto = {
-      username: this.username(),
-      email: this.email(),
-      password: this.password()
-    };
+onRegister(): void {
+  const registerDto: RegisterDto = {
+    username: this.username(),
+    email: this.email(),
+    password: this.password()
+  };
 
-    this.authService.registerUser(registerDto).subscribe({
-      next: (response) => {
-        this.successMessage = response;
-        this.errorMessage = '';
-      },
-      error: (err) =>{
-        this.errorMessage = 'Hiba történt a regisztráció során.';
-        console.error(err)
-      }
-    });
-  }
+  this.authService.registerUser(registerDto).subscribe({
+    next: (response) => {
+      this.successMessage.set(response);
+      this.errorMessage.set('');
+    },
+    error: (err) => {
+      const errorMsg = typeof err.error === 'string' ? err.error : 'Hiba történt a regisztráció során.';
+      
+      this.errorMessage.set(errorMsg);
+      this.successMessage.set('');
+      console.error('Regisztrációs hiba:', err);
+    }
+  });
+}
 
 
 }

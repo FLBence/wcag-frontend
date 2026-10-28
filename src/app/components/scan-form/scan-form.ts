@@ -1,9 +1,11 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectorRef, Component, EventEmitter, inject, Output } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, inject, Output, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ScanApiService } from '../../services/scan-api';
 import { ScanStatus } from '../../models/scan-status';
 import { Router } from '@angular/router';
+import { AuthService } from '../../services/auth-service';
+import { CreateScanRequestDto } from '../../models/create-scan-request-dto';
 
 @Component({
   imports: [CommonModule, FormsModule],
@@ -14,7 +16,11 @@ import { Router } from '@angular/router';
 export class ScanForm {
   private scanApiService = inject(ScanApiService);
   private changeDetectionRef = inject(ChangeDetectorRef);
+  private authService = inject(AuthService);
   private router = inject(Router);
+
+
+  protected isAuthWindowOpen = signal<boolean>(false);
 
   private websiteUrl = '';
   private isLoading = false;
@@ -23,9 +29,10 @@ export class ScanForm {
   
   @Output() scanStarted = new EventEmitter<number>();
 
-  onStartScan(event?: Event) {
-      if(event) {
-        event.preventDefault();
+  protected onStartScan() {
+      if(!this.authService.isLoggedIn()){
+        this.isAuthWindowOpen.set(true);
+        return;
       }
 
       let url = this.websiteUrl.trim();
@@ -38,7 +45,12 @@ export class ScanForm {
       this.isLoading = true;
       this.errorMessage = '';
 
-      this.scanApiService.createScan(url).subscribe({
+      const createScanRequestDto: CreateScanRequestDto = {
+        websiteUrl: url,
+        id: Number(localStorage.getItem('userId'))
+      };
+
+      this.scanApiService.createScan(createScanRequestDto).subscribe({
         next: (createdScan) => {
           this.scanApiService.startScan(createdScan.id).subscribe({
             next: () => {
@@ -76,6 +88,18 @@ export class ScanForm {
           this.errorMessage = err.error?.message || 'A megadott URL nem létezik vagy jelenleg nem elérhető.';
           this.changeDetectionRef.detectChanges();
         }
+      });
+    }
+
+    protected redirectToLogin(): void {
+      this.router.navigate(['/auth/login'], {
+        queryParams: { returnUrl: this.router.url}
+      });
+    }
+
+    protected redirectToRegister(): void {
+      this.router.navigate(['/auth/register'], {
+        queryParams: { returnUrl: this.router.url}
       });
     }
 }

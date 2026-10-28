@@ -2,9 +2,10 @@ import { CommonModule } from '@angular/common';
 import { Component, inject, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { ThemeService } from './services/theme-service';
+import { Navbar } from './components/navbar/navbar';
 
 @Component({
-  imports: [CommonModule, RouterOutlet],
+  imports: [CommonModule, RouterOutlet, Navbar],
   selector: 'app-root',
   styleUrl: './app.css',
   templateUrl: './app.html',

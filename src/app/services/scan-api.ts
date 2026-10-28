@@ -4,6 +4,7 @@ import { Observable, switchMap, takeWhile, timer } from "rxjs";
 import { ScanStatus } from "../models/scan-status";
 import { ScanResponseDto } from "../models/scan-response-dto";
 import { ScanResultResponseDto } from "../models/scan-result-response-dto";
+import { CreateScanRequestDto } from "../models/create-scan-request-dto";
 
 @Injectable({
     providedIn: 'root'
@@ -13,8 +14,8 @@ export class ScanApiService {
     private baseUrl = 'http://localhost:8080/api/scans';
 
 
-    createScan(websiteUrl: string): Observable<ScanResponseDto> {
-        return this.httpClient.post<ScanResponseDto>(this.baseUrl, {websiteUrl})
+    createScan(createScanRequestDto: CreateScanRequestDto): Observable<ScanResponseDto> {
+        return this.httpClient.post<ScanResponseDto>(this.baseUrl, createScanRequestDto)
     }
 
     startScan(scanId: number): Observable<string> {
