@@ -39,7 +39,9 @@ export class Login {
         localStorage.setItem('userId', response.userId);
         localStorage.setItem('username', response.username);
         const returnUrl = this.route.snapshot.queryParams['returnUrl'] || '';
-        this.router.navigateByUrl(returnUrl);
+        this.router.navigateByUrl(returnUrl).then(() => {
+          window.location.reload();
+        });
       },
       error: (err) =>{
         this.isLoading.set(false);
@@ -47,5 +49,9 @@ export class Login {
         console.error('Hiba a bejelentkezés során: ', err)
       }
     });
+  }
+
+  protected redirectToRegister(): void {
+    this.router.navigate(['/auth/register']);
   }
 }

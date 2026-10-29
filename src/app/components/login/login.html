@@ -85,6 +85,9 @@
               }
           </div>
         }
+        <div class="relative flex items-center w-full transition mt-3 text-sm text-blue-600">
+            <a (click)="redirectToRegister()" class="dark:hover:text-blue-400 hover:text-blue-800 cursor-pointer"  title="Átirányítás a regisztrációs felületre" >Még nincs felhasználói fiókja? (Regisztráció)</a>
+        </div>
     </div>
     @if (errorMessage()) {
         <p class="text-red-600 text-sm font-medium text-center">{{ errorMessage() }}</p>
@@ -93,7 +96,8 @@
     <button
       type="submit"
       [disabled]="loginForm.invalid"
-      class="w-full bg-blue-600 hover:bg-blue-700 dark:bg-blue-600 dark:hover:bg-blue-700 text-white font-semibold py-2.5 px-4 rounded-lg transition duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 shadow-sm"
+      class="w-full bg-blue-600 hover:bg-blue-700 dark:bg-blue-600 dark:hover:bg-blue-700 text-white font-semibold py-2.5 px-4 rounded-lg transition duration-200 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 shadow-sm"
+      title="Bejelentkezés"
     >
       <span>
         Bejelentkezés

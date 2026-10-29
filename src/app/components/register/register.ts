@@ -2,6 +2,7 @@ import { Component, inject, signal } from '@angular/core';
 import { AuthService } from '../../services/auth-service';
 import { RegisterDto } from '../../models/register-dto';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
   imports: [FormsModule],
@@ -12,6 +13,7 @@ import { FormsModule } from '@angular/forms';
 export class Register {
 
   private authService = inject(AuthService);
+  private router = inject(Router);
 
   isPasswordVisible = signal<boolean>(false);
   username = signal('');
@@ -45,6 +47,10 @@ onRegister(): void {
       console.error('Regisztrációs hiba:', err);
     }
   });
+}
+
+protected redirectToLogin(): void {
+    this.router.navigate(['/auth/login']);
 }
 
 

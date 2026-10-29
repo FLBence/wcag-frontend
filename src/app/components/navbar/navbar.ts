@@ -48,12 +48,15 @@ export class Navbar {
     this.isMenuOpen = false;
     this.router.navigate(['/myscans']);
   }
+  protected goToLogin(): void {
+    this.router.navigate(['/auth/login']);
+  }
 
   protected logout(): void {
     this.isMenuOpen = false;
     localStorage.removeItem('isLoggedIn');
     localStorage.removeItem('username');
-    localStorage.removeItem('id');
+    localStorage.removeItem('userId');
     this.router.navigate(['']);
   }
 }

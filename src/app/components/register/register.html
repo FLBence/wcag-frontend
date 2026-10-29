@@ -115,6 +115,9 @@
           </div>
         }
     </div>
+    <div class="relative flex items-center w-full transition text-sm text-blue-600">
+        <a (click)="redirectToLogin()" class="dark:hover:text-blue-400 hover:text-blue-800 cursor-pointer"  title="Átirányítás a bejelentkezés felületre">Már van felhasználói fiókja? (Bejelentkezés)</a>
+    </div>
 
     @if (successMessage()) {
         <p class="text-green-600 text-sm font-medium text-center mt-2">{{ successMessage() }}</p>
@@ -135,6 +138,7 @@
       type="submit"
       [disabled]="registrationForm.invalid"
       class="w-full bg-blue-600 hover:bg-blue-700 dark:bg-blue-600 dark:hover:bg-blue-700 text-white font-semibold py-2.5 px-4 rounded-lg transition duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 shadow-sm"
+      title="Regisztráció"
     >
       <span>
         Regisztrálás
