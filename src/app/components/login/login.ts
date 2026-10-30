@@ -1,4 +1,4 @@
-import { Component, inject, signal} from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { AuthService } from '../../services/auth-service';
 import { LoginDto } from '../../models/login-dto';
 import { FormsModule } from '@angular/forms';
@@ -11,7 +11,6 @@ import { ActivatedRoute, Router } from '@angular/router';
   templateUrl: './login.html',
 })
 export class Login {
-
   private authService = inject(AuthService);
   private route = inject(ActivatedRoute);
   private router = inject(Router);
@@ -23,14 +22,14 @@ export class Login {
   isLoading = signal(false);
 
   protected togglePasswordVisibility(): void {
-    this.isPasswordVisible.update(value => !value);
+    this.isPasswordVisible.update((value) => !value);
   }
 
-  protected onLogin(): void{
+  protected onLogin(): void {
     this.isLoading.set(true);
     const loginDto: LoginDto = {
       email: this.email(),
-      password: this.password()
+      password: this.password(),
     };
 
     this.authService.loginUser(loginDto).subscribe({
@@ -43,11 +42,11 @@ export class Login {
           window.location.reload();
         });
       },
-      error: (err) =>{
+      error: (err) => {
         this.isLoading.set(false);
         this.errorMessage.set(err.error || 'Hibás e-mail cím vagy jelszó.');
-        console.error('Hiba a bejelentkezés során: ', err)
-      }
+        console.error('Hiba a bejelentkezés során: ', err);
+      },
     });
   }
 

@@ -11,7 +11,6 @@ import { Router } from '@angular/router';
   templateUrl: './register.html',
 })
 export class Register {
-
   private authService = inject(AuthService);
   private router = inject(Router);
 
@@ -24,34 +23,33 @@ export class Register {
   successMessage = signal('');
 
   togglePasswordVisibility(): void {
-    this.isPasswordVisible.update(value => !value);
+    this.isPasswordVisible.update((value) => !value);
   }
 
-onRegister(): void {
-  const registerDto: RegisterDto = {
-    username: this.username(),
-    email: this.email(),
-    password: this.password()
-  };
+  onRegister(): void {
+    const registerDto: RegisterDto = {
+      username: this.username(),
+      email: this.email(),
+      password: this.password(),
+    };
 
-  this.authService.registerUser(registerDto).subscribe({
-    next: (response) => {
-      this.successMessage.set(response);
-      this.errorMessage.set('');
-    },
-    error: (err) => {
-      const errorMsg = typeof err.error === 'string' ? err.error : 'Hiba történt a regisztráció során.';
-      
-      this.errorMessage.set(errorMsg);
-      this.successMessage.set('');
-      console.error('Regisztrációs hiba:', err);
-    }
-  });
-}
+    this.authService.registerUser(registerDto).subscribe({
+      next: (response) => {
+        this.successMessage.set(response);
+        this.errorMessage.set('');
+      },
+      error: (err) => {
+        const errorMsg =
+          typeof err.error === 'string' ? err.error : 'Hiba történt a regisztráció során.';
 
-protected redirectToLogin(): void {
+        this.errorMessage.set(errorMsg);
+        this.successMessage.set('');
+        console.error('Regisztrációs hiba:', err);
+      },
+    });
+  }
+
+  protected redirectToLogin(): void {
     this.router.navigate(['/auth/login']);
-}
-
-
+  }
 }

@@ -18,14 +18,14 @@ export class Navbar {
   protected isMenuOpen = false;
 
   get isLoggedIn(): boolean {
-    if(isPlatformBrowser(this.platformId)){
+    if (isPlatformBrowser(this.platformId)) {
       return localStorage.getItem('isLoggedIn') === 'true';
     }
     return false;
   }
 
   get username(): string {
-    if(isPlatformBrowser(this.platformId)){
+    if (isPlatformBrowser(this.platformId)) {
       return localStorage.getItem('username') || 'Felhasználó';
     }
     return 'Felhasználó';
@@ -36,7 +36,7 @@ export class Navbar {
   }
 
   protected toggleTheme(): void {
-    this.themeService.toggleTheme()
+    this.themeService.toggleTheme();
   }
 
   protected goToSettings(): void {
@@ -46,7 +46,7 @@ export class Navbar {
 
   protected goToMyScans(): void {
     this.isMenuOpen = false;
-    this.router.navigate(['/myscans']);
+    this.router.navigate([`/users/${localStorage.getItem('userId')}/myscans`]);
   }
   protected goToLogin(): void {
     this.router.navigate(['/auth/login']);

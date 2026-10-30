@@ -1,52 +1,113 @@
-<nav class="bg-white dark:bg-gray-900 shadow-md px-6 py-3 grid grid-cols-3 items-center transition-colors duration-300">
+<nav
+  class="bg-white dark:bg-gray-900 shadow-md px-6 py-3 grid grid-cols-3 items-center transition-colors duration-300"
+>
   <div class="flex items-center justify-start">
     @if (isLoggedIn) {
       <div class="relative">
-        <button (click)="toggleMenu()" class="flex items-center gap-2 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 px-4 py-2 rounded-lg font-medium text-gray-700 dark:text-gray-200 transition">
+        <button
+          (click)="toggleMenu()"
+          class="flex items-center gap-2 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 px-4 py-2 rounded-lg font-medium text-gray-700 dark:text-gray-200 transition"
+        >
           <span>{{ username }}</span>
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M19 9l-7 7-7-7"
+            ></path>
           </svg>
         </button>
 
         @if (isMenuOpen) {
-          <div class="absolute left-0 mt-2 w-48 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg py-1 z-50">
-            <button (click)="goToSettings()" class="w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700">
+          <div
+            class="absolute left-0 mt-2 w-48 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg py-1 z-50"
+          >
+            <button
+              (click)="goToSettings()"
+              class="w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700"
+            >
               Adatok megváltoztatása
             </button>
-            <button (click)="goToMyScans()" class="w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700">
-              Eddigi scanjeim
+            <button
+              (click)="goToMyScans()"
+              class="w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700"
+            >
+              Eddigi szkennjeim
             </button>
             <div class="border-t border-gray-100 dark:border-gray-700 my-1"></div>
-            <button (click)="logout()" class="w-full text-left px-4 py-2 text-sm text-red-600 dark:text-red-400 hover:bg-gray-100 dark:hover:bg-gray-700">
+            <button
+              (click)="logout()"
+              class="w-full text-left px-4 py-2 text-sm text-red-600 dark:text-red-400 hover:bg-gray-100 dark:hover:bg-gray-700"
+            >
               Kijelentkezés
             </button>
           </div>
         }
       </div>
     } @else {
-      <a (click)="goToLogin()" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition text-sm font-medium" title="Bejelentkezés">
+      <a
+        (click)="goToLogin()"
+        class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition text-sm font-medium"
+        title="Bejelentkezés"
+      >
         Bejelentkezés
       </a>
     }
   </div>
 
   <div class="text-center">
-    <h1 class="text-xl sm:text-2xl font-extrabold text-gray-900 dark:text-white cursor-pointer" routerLink="/">
+    <h1 class="text-xl sm:text-2xl font-extrabold text-gray-900 dark:text-white cursor-pointer">
       WCAG Accessibility Auditor
     </h1>
   </div>
 
   <div class="flex items-center justify-end">
-    <button (click)="toggleTheme()" 
-            class="p-2.5 rounded-xl bg-gray-100 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-800 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-700 shadow-sm transition-colors cursor-pointer flex items-center justify-center">
+    <button
+      (click)="toggleTheme()"
+      class="p-2.5 rounded-xl bg-gray-100 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-800 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-700 shadow-sm transition-colors cursor-pointer flex items-center justify-center"
+    >
       @if (themeService.isDarkMode()) {
         <span title="Átváltás világos módba">
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#FFFF00" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2"></path><path d="M12 20v2"></path><path d="m4.93 4.93 1.41 1.41"></path><path d="m17.66 17.66 1.41 1.41"></path><path d="M2 12h2"></path><path d="M20 12h2"></path><path d="m6.34 17.66-1.41 1.41"></path><path d="m19.07 4.93-1.41 1.41"></path></svg>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="#FFFF00"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <circle cx="12" cy="12" r="4"></circle>
+            <path d="M12 2v2"></path>
+            <path d="M12 20v2"></path>
+            <path d="m4.93 4.93 1.41 1.41"></path>
+            <path d="m17.66 17.66 1.41 1.41"></path>
+            <path d="M2 12h2"></path>
+            <path d="M20 12h2"></path>
+            <path d="m6.34 17.66-1.41 1.41"></path>
+            <path d="m19.07 4.93-1.41 1.41"></path>
+          </svg>
         </span>
       } @else {
         <span title="Átváltás sötét módba">
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9"></path><path d="M20 3v4"></path><path d="M22 5h-4"></path></svg>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="#000000"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9"></path>
+            <path d="M20 3v4"></path>
+            <path d="M22 5h-4"></path>
+          </svg>
         </span>
       }
     </button>

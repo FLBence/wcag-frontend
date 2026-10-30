@@ -1,4 +1,4 @@
-export interface CreateScanRequestDto{
-    websiteUrl: string;
-    id: number;
+export interface CreateScanRequestDto {
+  websiteUrl: string;
+  id: number;
 }

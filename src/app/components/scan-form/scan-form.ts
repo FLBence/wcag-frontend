@@ -19,87 +19,85 @@ export class ScanForm {
   private authService = inject(AuthService);
   private router = inject(Router);
 
-
   protected isAuthWindowOpen = signal<boolean>(false);
 
   private websiteUrl = '';
   private isLoading = false;
   private errorMessage = '';
 
-  
   @Output() scanStarted = new EventEmitter<number>();
 
   protected onStartScan() {
-      if(!this.authService.isLoggedIn()){
-        this.isAuthWindowOpen.set(true);
-        return;
-      }
+    if (!this.authService.isLoggedIn()) {
+      this.isAuthWindowOpen.set(true);
+      return;
+    }
 
-      let url = this.websiteUrl.trim();
-      if (!url) return;
+    let url = this.websiteUrl.trim();
+    if (!url) return;
 
-      if (!url.startsWith('http://') && !url.startsWith('https://')) {
-        url = `https://${url}`;
-      }
+    if (!url.startsWith('http://') && !url.startsWith('https://')) {
+      url = `https://${url}`;
+    }
 
-      this.isLoading = true;
-      this.errorMessage = '';
+    this.isLoading = true;
+    this.errorMessage = '';
 
-      const createScanRequestDto: CreateScanRequestDto = {
-        websiteUrl: url,
-        id: Number(localStorage.getItem('userId'))
-      };
+    const createScanRequestDto: CreateScanRequestDto = {
+      websiteUrl: url,
+      id: Number(localStorage.getItem('userId')),
+    };
 
-      this.scanApiService.createScan(createScanRequestDto).subscribe({
-        next: (createdScan) => {
-          this.scanApiService.startScan(createdScan.id).subscribe({
-            next: () => {
-              this.scanStarted.emit(createdScan.id);
+    this.scanApiService.createScan(createScanRequestDto).subscribe({
+      next: (createdScan) => {
+        this.scanApiService.startScan(createdScan.id).subscribe({
+          next: () => {
+            this.scanStarted.emit(createdScan.id);
 
-              this.scanApiService.currentScanStatus(createdScan.id).subscribe({
-                next: (scan) => {
-                  if(scan.status === ScanStatus.COMPLETED){
-                    this.isLoading = false;
-                    this.changeDetectionRef.detectChanges();
-                    this.router.navigate([`/${createdScan.id}/results`]);
-                  }
-                  else if(scan.status === ScanStatus.ABORTED){
-                    this.isLoading = false;
-                    this.errorMessage = "Hiba történt a szkennelés közben, próbálja újra később!";
-                    this.changeDetectionRef.detectChanges();
-                  }
-                },
-                error: (err) => {
+            this.scanApiService.currentScanStatus(createdScan.id).subscribe({
+              next: (scan) => {
+                if (scan.status === ScanStatus.COMPLETED) {
                   this.isLoading = false;
-                  this.errorMessage = "Hiba történt a szkennelés állapotának lekérdezése közben";
+                  this.changeDetectionRef.detectChanges();
+                  this.router.navigate([`/${createdScan.id}/results`]);
+                } else if (scan.status === ScanStatus.ABORTED) {
+                  this.isLoading = false;
+                  this.errorMessage = 'Hiba történt a szkennelés közben, próbálja újra később!';
                   this.changeDetectionRef.detectChanges();
                 }
-              });
-            },
-            error: (err) => {
+              },
+              error: (err) => {
+                this.isLoading = false;
+                this.errorMessage = 'Hiba történt a szkennelés állapotának lekérdezése közben';
+                this.changeDetectionRef.detectChanges();
+              },
+            });
+          },
+          error: (err) => {
             this.isLoading = false;
             this.errorMessage = err.error?.message || 'Hiba történt a szkennelés elindításakor!';
             this.changeDetectionRef.detectChanges();
-            } 
-          });
-        },
-        error: (err) => {
-          this.isLoading = false;
-          this.errorMessage = err.error?.message || 'A megadott URL nem létezik vagy jelenleg nem elérhető.';
-          this.changeDetectionRef.detectChanges();
-        }
-      });
-    }
+          },
+        });
+      },
+      error: (err) => {
+        this.isLoading = false;
+        this.errorMessage =
+          err.error?.message || 'A megadott URL nem létezik vagy jelenleg nem elérhető.';
+        this.changeDetectionRef.detectChanges();
+      },
+    });
+  }
 
-    protected redirectToLogin(): void {
-      this.router.navigate(['/auth/login'], {
-        queryParams: { returnUrl: this.router.url}
-      });
-    }
+  protected redirectToLogin(): void {
+    this.router.navigate(['/auth/login'], {
+      queryParams: { returnUrl: this.router.url },
+    });
+  }
 
-    protected redirectToRegister(): void {
-      this.router.navigate(['/auth/register'], {
-        queryParams: { returnUrl: this.router.url}
-      });
-    }
+  protected redirectToRegister(): void {
+    this.router.navigate(['/auth/register'], {
+      queryParams: { returnUrl: this.router.url },
+    });
+  }
 }
