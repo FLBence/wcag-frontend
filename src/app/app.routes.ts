@@ -4,6 +4,7 @@ import { ScanResults } from './components/scan-results/scan-results';
 import { Register } from './components/register/register';
 import { Login } from './components/login/login';
 import { MyScans } from './components/my-scans/my-scans';
+import { authGuard } from './guards/auth-guard';
 
 export const routes: Routes = [
   {
@@ -13,6 +14,7 @@ export const routes: Routes = [
   {
     path: ':id/results',
     component: ScanResults,
+    canActivate: [authGuard],
   },
   {
     path: 'auth/register',
@@ -25,5 +27,6 @@ export const routes: Routes = [
   {
     path: 'users/:id/myscans',
     component: MyScans,
+    canActivate: [authGuard],
   },
 ];

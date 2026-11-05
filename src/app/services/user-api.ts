@@ -9,7 +9,7 @@ export class UserApiService {
   private httpClient = inject(HttpClient);
   private baseUrl = 'http://localhost:8080/api/users';
 
-  getMyScans(userId: number): Observable<ScanResponseDto[]> {
-    return this.httpClient.get<ScanResponseDto[]>(`${this.baseUrl}/${userId}/myscans`);
+  getMyScans(): Observable<ScanResponseDto[]> {
+    return this.httpClient.get<ScanResponseDto[]>(`${this.baseUrl}/myscans`);
   }
 }

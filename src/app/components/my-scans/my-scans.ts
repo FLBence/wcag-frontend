@@ -21,19 +21,12 @@ export class MyScans implements OnInit {
 
   ngOnInit(): void {
     if (isPlatformBrowser(this.platformId)) {
-      const userIdStr = localStorage.getItem('userId');
-      const userId = userIdStr ? Number(userIdStr) : null;
-
-      if (userId) this.getMyScans(userId);
-      else {
-        console.log('Hiba: Nincs bejelentkezett felhasználó ID a localStorage-ben.');
-        this.isLoading.set(false);
-      }
+      this.getMyScans();
     }
   }
 
-  getMyScans(userId: number): void {
-    this.userApiService.getMyScans(userId).subscribe({
+  protected getMyScans(): void {
+    this.userApiService.getMyScans().subscribe({
       next: (data) => {
         this.myScans = data;
         this.isLoading.set(false);
@@ -45,7 +38,11 @@ export class MyScans implements OnInit {
     });
   }
 
-  redirectToResults(scanId: number): void {
+  protected redirectToResults(scanId: number): void {
     this.router.navigate([`/${scanId}/results`]);
+  }
+
+  protected goToMain(): void {
+    this.router.navigate(['/']);
   }
 }

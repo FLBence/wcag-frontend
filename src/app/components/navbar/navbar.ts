@@ -51,12 +51,16 @@ export class Navbar {
   protected goToLogin(): void {
     this.router.navigate(['/auth/login']);
   }
+  protected goToMain(): void {
+    this.router.navigate(['']);
+  }
 
   protected logout(): void {
     this.isMenuOpen = false;
     localStorage.removeItem('isLoggedIn');
     localStorage.removeItem('username');
     localStorage.removeItem('userId');
+    localStorage.removeItem('token');
     this.router.navigate(['']);
   }
 }

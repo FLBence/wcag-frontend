@@ -37,6 +37,7 @@ export class Login {
         localStorage.setItem('isLoggedIn', 'true');
         localStorage.setItem('userId', response.userId);
         localStorage.setItem('username', response.username);
+        localStorage.setItem('token', response.token);
         const returnUrl = this.route.snapshot.queryParams['returnUrl'] || '';
         this.router.navigateByUrl(returnUrl).then(() => {
           window.location.reload();

@@ -1,12 +1,12 @@
 <nav
   class="bg-white dark:bg-gray-900 shadow-md px-6 py-3 grid grid-cols-3 items-center transition-colors duration-300"
 >
-  <div class="flex items-center justify-start">
+  <div class="flex items-center justify-start hover:cursor-pointer">
     @if (isLoggedIn) {
       <div class="relative">
         <button
           (click)="toggleMenu()"
-          class="flex items-center gap-2 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 px-4 py-2 rounded-lg font-medium text-gray-700 dark:text-gray-200 transition"
+          class="flex items-center gap-2 bg-gray-100 dark:bg-gray-800 hover:cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-700 px-4 py-2 rounded-lg font-medium text-gray-700 dark:text-gray-200 transition"
         >
           <span>{{ username }}</span>
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -25,20 +25,20 @@
           >
             <button
               (click)="goToSettings()"
-              class="w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700"
+              class="w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700"
             >
-              Adatok megváltoztatása
+              Profil szerkesztése
             </button>
             <button
               (click)="goToMyScans()"
-              class="w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700"
+              class="w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700"
             >
-              Eddigi szkennjeim
+              Korábbi elemzések
             </button>
             <div class="border-t border-gray-100 dark:border-gray-700 my-1"></div>
             <button
               (click)="logout()"
-              class="w-full text-left px-4 py-2 text-sm text-red-600 dark:text-red-400 hover:bg-gray-100 dark:hover:bg-gray-700"
+              class="w-full text-left px-4 py-2 text-sm text-red-600 dark:text-red-400 hover:cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700"
             >
               Kijelentkezés
             </button>
@@ -57,7 +57,11 @@
   </div>
 
   <div class="text-center">
-    <h1 class="text-xl sm:text-2xl font-extrabold text-gray-900 dark:text-white cursor-pointer">
+    <h1
+      (click)="goToMain()"
+      class="text-xl sm:text-2xl font-extrabold text-gray-900 dark:text-white cursor-pointer"
+      title="Vissza a főoldalra"
+    >
       WCAG Accessibility Auditor
     </h1>
   </div>
@@ -66,6 +70,7 @@
     <button
       (click)="toggleTheme()"
       class="p-2.5 rounded-xl bg-gray-100 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-800 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-700 shadow-sm transition-colors cursor-pointer flex items-center justify-center"
+      title="Átváltás sötét módba"
     >
       @if (themeService.isDarkMode()) {
         <span title="Átváltás világos módba">
@@ -92,7 +97,7 @@
           </svg>
         </span>
       } @else {
-        <span title="Átváltás sötét módba">
+        <span>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="20"
