@@ -1,8 +1,9 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, Input, signal } from '@angular/core';
 import { AuthService } from '../../services/auth-service';
 import { LoginDto } from '../../models/login-dto';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { map, takeWhile, timer } from 'rxjs';
 
 @Component({
   imports: [FormsModule],
@@ -38,6 +39,7 @@ export class Login {
         localStorage.setItem('userId', response.userId);
         localStorage.setItem('username', response.username);
         localStorage.setItem('token', response.token);
+        this.authService.starttokenTimer();
         const returnUrl = this.route.snapshot.queryParams['returnUrl'] || '';
         this.router.navigateByUrl(returnUrl).then(() => {
           window.location.reload();
