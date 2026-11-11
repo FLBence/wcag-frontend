@@ -24,7 +24,7 @@
 
     <button
       type="submit"
-      [disabled]="isLoading || !websiteUrl().trim()"
+      [disabled]="isLoading() || !websiteUrl().trim()"
       class="w-full bg-blue-600 hover:bg-blue-700 dark:bg-blue-600 dark:hover:bg-blue-700 text-white font-semibold py-2.5 px-4 rounded-lg transition duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 shadow-sm"
     >
       @if (isLoading()) {

@@ -32,7 +32,7 @@ export class Navbar {
   }
 
   protected toggleMenu(): void {
-    this.isMenuOpen.set(!this.isMenuOpen);
+    this.isMenuOpen.set(!this.isMenuOpen());
   }
 
   protected toggleTheme(): void {
