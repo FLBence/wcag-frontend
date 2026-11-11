@@ -1,4 +1,4 @@
-import { Component, inject, PLATFORM_ID } from '@angular/core';
+import { Component, inject, PLATFORM_ID, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { ThemeService } from '../../services/theme-service';
 import { isPlatformBrowser } from '@angular/common';
@@ -15,7 +15,7 @@ export class Navbar {
   private themeService = inject(ThemeService);
   private platformId = inject(PLATFORM_ID);
 
-  protected isMenuOpen = false;
+  protected isMenuOpen = signal(false);
 
   get isLoggedIn(): boolean {
     if (isPlatformBrowser(this.platformId)) {
@@ -32,7 +32,7 @@ export class Navbar {
   }
 
   protected toggleMenu(): void {
-    this.isMenuOpen = !this.isMenuOpen;
+    this.isMenuOpen.set(!this.isMenuOpen);
   }
 
   protected toggleTheme(): void {
@@ -40,12 +40,12 @@ export class Navbar {
   }
 
   protected goToSettings(): void {
-    this.isMenuOpen = false;
+    this.isMenuOpen.set(false);
     this.router.navigate(['/settings']);
   }
 
   protected goToMyScans(): void {
-    this.isMenuOpen = false;
+    this.isMenuOpen.set(false);
     this.router.navigate([`/users/${localStorage.getItem('userId')}/myscans`]);
   }
   protected goToLogin(): void {
@@ -56,7 +56,7 @@ export class Navbar {
   }
 
   protected logout(): void {
-    this.isMenuOpen = false;
+    this.isMenuOpen.set(false);
     localStorage.removeItem('isLoggedIn');
     localStorage.removeItem('username');
     localStorage.removeItem('userId');

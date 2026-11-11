@@ -5,6 +5,7 @@ import { ScanStatus } from '../models/scan-status';
 import { ScanResponseDto } from '../models/scan-response-dto';
 import { ScanResultResponseDto } from '../models/scan-result-response-dto';
 import { CreateScanRequestDto } from '../models/create-scan-request-dto';
+import { AiSuggestionDto } from '../models/ai-suggestion-dto';
 
 @Injectable({
   providedIn: 'root',
@@ -36,6 +37,12 @@ export class ScanApiService {
         (scan) => scan.status === ScanStatus.PENDING || scan.status === ScanStatus.IN_PROGRESS,
         true,
       ),
+    );
+  }
+
+  getSuggestion(scanId: number, scanResultId: number): Observable<AiSuggestionDto> {
+    return this.httpClient.get<AiSuggestionDto>(
+      `${this.baseUrl}/${scanId}/results/${scanResultId}/suggestion`,
     );
   }
 }

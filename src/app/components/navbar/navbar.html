@@ -19,16 +19,10 @@
           </svg>
         </button>
 
-        @if (isMenuOpen) {
+        @if (isMenuOpen()) {
           <div
             class="absolute left-0 mt-2 w-48 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg py-1 z-50"
           >
-            <button
-              (click)="goToSettings()"
-              class="w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700"
-            >
-              Profil szerkesztése
-            </button>
             <button
               (click)="goToMyScans()"
               class="w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700"

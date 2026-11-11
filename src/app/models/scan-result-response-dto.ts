@@ -1,3 +1,4 @@
+import { AiSuggestionDto } from './ai-suggestion-dto';
 import { ErrorLevel } from './error-level';
 
 export interface ScanResultResponseDto {
@@ -5,7 +6,7 @@ export interface ScanResultResponseDto {
   targetSelector: string;
   htmlElement: string;
   errorLevel: ErrorLevel;
-  aiSuggestion?: string;
+  aiSuggestion?: AiSuggestionDto | null;
   ruleId: string;
   errorName: string;
   description: string;

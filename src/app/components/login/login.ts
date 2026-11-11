@@ -1,9 +1,8 @@
-import { Component, inject, Input, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { AuthService } from '../../services/auth-service';
 import { LoginDto } from '../../models/login-dto';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { map, takeWhile, timer } from 'rxjs';
 
 @Component({
   imports: [FormsModule],
@@ -16,11 +15,11 @@ export class Login {
   private route = inject(ActivatedRoute);
   private router = inject(Router);
 
-  isPasswordVisible = signal<boolean>(false);
-  email = signal('');
-  password = signal('');
-  errorMessage = signal('');
-  isLoading = signal(false);
+  private isPasswordVisible = signal(false);
+  private email = signal('');
+  private password = signal('');
+  protected errorMessage = signal('');
+  private isLoading = signal(false);
 
   protected togglePasswordVisibility(): void {
     this.isPasswordVisible.update((value) => !value);
@@ -39,7 +38,7 @@ export class Login {
         localStorage.setItem('userId', response.userId);
         localStorage.setItem('username', response.username);
         localStorage.setItem('token', response.token);
-        this.authService.starttokenTimer();
+        this.authService.startTokenTimer();
         const returnUrl = this.route.snapshot.queryParams['returnUrl'] || '';
         this.router.navigateByUrl(returnUrl).then(() => {
           window.location.reload();
@@ -55,5 +54,9 @@ export class Login {
 
   protected redirectToRegister(): void {
     this.router.navigate(['/auth/register']);
+  }
+
+  protected redirectToChangePassword(): void {
+    this.router.navigate(['/auth/changepass']);
   }
 }

@@ -14,13 +14,13 @@ export class Register {
   private authService = inject(AuthService);
   private router = inject(Router);
 
-  isPasswordVisible = signal<boolean>(false);
-  username = signal('');
-  email = signal('');
-  password = signal('');
-
-  errorMessage = signal('');
-  successMessage = signal('');
+  protected isPasswordVisible = signal(false);
+  private username = signal('');
+  private email = signal('');
+  private password = signal('');
+  protected errorMessage = signal('');
+  protected successMessage = signal('');
+  protected registered = signal(false);
 
   togglePasswordVisibility(): void {
     this.isPasswordVisible.update((value) => !value);
@@ -36,6 +36,7 @@ export class Register {
     this.authService.registerUser(registerDto).subscribe({
       next: (response) => {
         this.successMessage.set(response);
+        this.registered.set(true);
         this.errorMessage.set('');
       },
       error: (err) => {

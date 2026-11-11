@@ -1,9 +1,12 @@
-import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, OnInit, signal } from '@angular/core';
 import { ScanApiService } from '../../services/scan-api';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ScanResultResponseDto } from '../../models/scan-result-response-dto';
 import { ErrorLevel } from '../../models/error-level';
 import { NgClass } from '@angular/common';
+import { AiSuggestionDto } from '../../models/ai-suggestion-dto';
+import { finalize } from 'rxjs';
+
 @Component({
   imports: [NgClass],
   selector: 'app-scan-results',
@@ -14,11 +17,19 @@ export class ScanResults implements OnInit {
   private scanApiService = inject(ScanApiService);
   private changeDetectionRef = inject(ChangeDetectorRef);
   private activatedRoute = inject(ActivatedRoute);
+  private router = inject(Router);
 
-  protected scanResult: ScanResultResponseDto[] | null = null;
-  private isLoading = true;
-  private errorMessage = '';
+  protected allScanResults: ScanResultResponseDto[] = [];
+
+  protected scanResult: ScanResultResponseDto[] = [];
+  private pageSize = 15;
+
+  protected isLoading = true;
+  protected errorMessage = '';
   private expandedRowIds = new Set<number>();
+  protected loadingSuggestionId = signal<number | null>(null);
+  protected suggestion = signal<AiSuggestionDto | null>(null);
+  protected suggestionError = signal<string | null>(null);
 
   ngOnInit(): void {
     const scanId = Number(this.activatedRoute.snapshot.paramMap.get('id'));
@@ -33,26 +44,39 @@ export class ScanResults implements OnInit {
   getScanResultData(scanId: number): void {
     this.scanApiService.getScanResults(scanId).subscribe({
       next: (data) => {
-        this.scanResult = data;
+        this.allScanResults = data || [];
+        this.scanResult = this.allScanResults.slice(0, this.pageSize);
         this.isLoading = false;
         this.changeDetectionRef.detectChanges();
       },
       error: (err) => {
         this.isLoading = false;
         this.errorMessage = 'Hiba történt az eredmények lekérdezése közben!';
+        console.error(err);
         this.changeDetectionRef.detectChanges();
       },
     });
   }
 
+  onTableScroll(event: any): void {
+    const element = event.target;
+    const isAtBottom = element.scrollHeight - element.scrollTop <= element.clientHeight + 20;
+
+    if (isAtBottom && this.scanResult.length < this.allScanResults.length) {
+      const nextBatchSize = this.scanResult.length + this.pageSize;
+      this.scanResult = this.allScanResults.slice(0, nextBatchSize);
+      this.changeDetectionRef.detectChanges();
+    }
+  }
+
   get totalViolations(): number {
-    return this.scanResult ? this.scanResult.length : 0;
+    return this.allScanResults.length;
   }
 
   getCountByLevel(level: ErrorLevel): number {
-    if (!this.scanResult) return 0;
-    return this.scanResult.filter((item) => item.errorLevel?.toUpperCase() === level.toUpperCase())
-      .length;
+    return this.allScanResults.filter(
+      (item) => item.errorLevel?.toUpperCase() === level.toUpperCase(),
+    ).length;
   }
 
   getPercentage(level: ErrorLevel): number {
@@ -83,5 +107,43 @@ export class ScanResults implements OnInit {
 
   isExpanded(id: number): boolean {
     return this.expandedRowIds.has(id);
+  }
+
+  getSuggestion(item: ScanResultResponseDto): void {
+    this.loadingSuggestionId.set(item.id);
+    this.suggestionError.set(null);
+    const scanId = Number(this.activatedRoute.snapshot.paramMap.get('id'));
+
+    this.scanApiService
+      .getSuggestion(scanId, item.id)
+      .pipe(finalize(() => this.loadingSuggestionId.set(null)))
+      .subscribe({
+        next: (suggestion) => {
+          item.aiSuggestion = suggestion;
+          this.suggestion.set(suggestion);
+        },
+        error: (err) => {
+          this.suggestionError.set(
+            err.status === 502
+              ? 'Az AI javaslat jelenleg nem elérhető.'
+              : 'Hiba történt a javaslat lekérésekor.',
+          );
+        },
+      });
+  }
+
+  openSuggestion(item: ScanResultResponseDto): void {
+    if (item.aiSuggestion) {
+      this.suggestion.set(item.aiSuggestion);
+    }
+  }
+
+  closeSuggestion(): void {
+    this.suggestion.set(null);
+    this.suggestionError.set(null);
+  }
+
+  protected goToMain(): void {
+    this.router.navigate(['']);
   }
 }

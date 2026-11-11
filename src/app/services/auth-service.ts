@@ -19,7 +19,7 @@ export class AuthService {
 
   constructor() {
     if (isPlatformBrowser(this.platformId)) {
-      this.starttokenTimer();
+      this.startTokenTimer();
     }
   }
 
@@ -38,7 +38,11 @@ export class AuthService {
     return this.httpClient.post(`${this.baseUrl}/login`, loginDto);
   }
 
-  public starttokenTimer(): void {
+  changePassword(loginDto: LoginDto): Observable<string> {
+    return this.httpClient.put(`${this.baseUrl}/changepass`, loginDto, { responseType: 'text' });
+  }
+
+  public startTokenTimer(): void {
     if (!isPlatformBrowser(this.platformId)) return;
 
     const token = localStorage.getItem('token');
@@ -55,13 +59,7 @@ export class AuthService {
 
       this.stopTokenTimer();
 
-      this.timerSub = timer(0, 1000)
-        .pipe(takeWhile((n) => n <= timeLeft))
-        .subscribe({
-          complete: () => {
-            this.logout();
-          },
-        });
+      this.timerSub = timer(timeLeft * 1000).subscribe(() => this.logout());
     } catch (e) {
       console.error('Hibás token formátum', e);
       this.logout();

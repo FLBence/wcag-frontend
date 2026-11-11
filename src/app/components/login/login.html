@@ -117,6 +117,17 @@
       }
       <div class="relative flex items-center w-full transition mt-3 text-sm text-blue-600">
         <a
+          (click)="redirectToChangePassword()"
+          class="dark:hover:text-blue-400 hover:text-blue-800 cursor-pointer"
+          title="Átirányítás a regisztrációs felületre"
+        >
+          Jelszó megváltoztatása
+        </a>
+      </div>
+      <div
+        class="relative flex items-center w-full transition mt-3 pt-3 border-t border-gray-700 text-sm text-blue-600"
+      >
+        <a
           (click)="redirectToRegister()"
           class="dark:hover:text-blue-400 hover:text-blue-800 cursor-pointer"
           title="Átirányítás a regisztrációs felületre"

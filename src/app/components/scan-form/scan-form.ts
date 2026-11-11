@@ -19,11 +19,11 @@ export class ScanForm {
   private authService = inject(AuthService);
   private router = inject(Router);
 
-  protected isAuthWindowOpen = signal<boolean>(false);
+  protected isAuthWindowOpen = signal(false);
 
-  private websiteUrl = '';
-  private isLoading = false;
-  private errorMessage = '';
+  private websiteUrl = signal('');
+  private isLoading = signal(false);
+  private errorMessage = signal('');
 
   @Output() scanStarted = new EventEmitter<number>();
 
@@ -33,15 +33,15 @@ export class ScanForm {
       return;
     }
 
-    let url = this.websiteUrl.trim();
+    let url = this.websiteUrl().trim();
     if (!url) return;
 
     if (!url.startsWith('http://') && !url.startsWith('https://')) {
       url = `https://${url}`;
     }
 
-    this.isLoading = true;
-    this.errorMessage = '';
+    this.isLoading.set(true);
+    this.errorMessage.set('');
 
     const createScanRequestDto: CreateScanRequestDto = {
       websiteUrl: url,
@@ -57,31 +57,31 @@ export class ScanForm {
             this.scanApiService.currentScanStatus(createdScan.id).subscribe({
               next: (scan) => {
                 if (scan.status === ScanStatus.COMPLETED) {
-                  this.isLoading = false;
+                  this.isLoading.set(false);
                   this.changeDetectionRef.detectChanges();
                   this.router.navigate([`/${createdScan.id}/results`]);
                 } else if (scan.status === ScanStatus.ABORTED) {
-                  this.isLoading = false;
-                  this.errorMessage = 'Hiba történt a szkennelés közben, próbálja újra később!';
+                  this.isLoading.set(false);
+                  this.errorMessage.set('Hiba történt a szkennelés közben, próbálja újra később!');
                   this.changeDetectionRef.detectChanges();
                 }
               },
               error: (err) => {
-                this.isLoading = false;
-                this.errorMessage = 'Hiba történt a szkennelés állapotának lekérdezése közben';
+                this.isLoading.set(false);
+                this.errorMessage.set('Hiba történt a szkennelés állapotának lekérdezése közben');
                 this.changeDetectionRef.detectChanges();
               },
             });
           },
           error: (err) => {
-            this.isLoading = false;
+            this.isLoading.set(false);
             this.errorMessage = err.error?.message || 'Hiba történt a szkennelés elindításakor!';
             this.changeDetectionRef.detectChanges();
           },
         });
       },
       error: (err) => {
-        this.isLoading = false;
+        this.isLoading.set(false);
         this.errorMessage =
           err.error?.message || 'A megadott URL nem létezik vagy jelenleg nem elérhető.';
         this.changeDetectionRef.detectChanges();
