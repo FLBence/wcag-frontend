@@ -15,17 +15,16 @@ import { finalize } from 'rxjs';
 })
 export class ScanResults implements OnInit {
   private scanApiService = inject(ScanApiService);
-  private changeDetectionRef = inject(ChangeDetectorRef);
   private activatedRoute = inject(ActivatedRoute);
   private router = inject(Router);
 
   protected allScanResults: ScanResultResponseDto[] = [];
 
   protected scanResult: ScanResultResponseDto[] = [];
-  private pageSize = 15;
+  private pageSize = signal(15);
 
-  protected isLoading = true;
-  protected errorMessage = '';
+  protected isLoading = signal(true);
+  protected errorMessage = signal('');
   private expandedRowIds = new Set<number>();
   protected loadingSuggestionId = signal<number | null>(null);
   protected suggestion = signal<AiSuggestionDto | null>(null);
@@ -36,8 +35,8 @@ export class ScanResults implements OnInit {
 
     if (scanId) this.getScanResultData(scanId);
     else {
-      this.isLoading = false;
-      this.errorMessage = 'Hiba történt az adatok lekérése közben!';
+      this.isLoading.set(false);
+      this.errorMessage.set('Hiba történt az adatok lekérése közben!');
     }
   }
 
@@ -45,15 +44,13 @@ export class ScanResults implements OnInit {
     this.scanApiService.getScanResults(scanId).subscribe({
       next: (data) => {
         this.allScanResults = data || [];
-        this.scanResult = this.allScanResults.slice(0, this.pageSize);
-        this.isLoading = false;
-        this.changeDetectionRef.detectChanges();
+        this.scanResult = this.allScanResults.slice(0, this.pageSize());
+        this.isLoading.set(false);
       },
       error: (err) => {
-        this.isLoading = false;
-        this.errorMessage = 'Hiba történt az eredmények lekérdezése közben!';
+        this.isLoading.set(false);
+        this.errorMessage.set('Hiba történt az eredmények lekérdezése közben!');
         console.error(err);
-        this.changeDetectionRef.detectChanges();
       },
     });
   }
@@ -63,9 +60,8 @@ export class ScanResults implements OnInit {
     const isAtBottom = element.scrollHeight - element.scrollTop <= element.clientHeight + 20;
 
     if (isAtBottom && this.scanResult.length < this.allScanResults.length) {
-      const nextBatchSize = this.scanResult.length + this.pageSize;
+      const nextBatchSize = this.scanResult.length + this.pageSize();
       this.scanResult = this.allScanResults.slice(0, nextBatchSize);
-      this.changeDetectionRef.detectChanges();
     }
   }
 
