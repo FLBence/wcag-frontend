@@ -1,5 +1,11 @@
 /* You can add global styles to this file, and also import other style files */
 
+/*
+ * Az alkalmazás globális stílusbeállításai.
+ *
+ * Betölti a Tailwind CSS-t, meghatározza a sötét módhoz tartozó egyedi variánst, valamint kezeli az automatikusan
+ * kitöltött űrlapmezők megjelenését sötét témában.
+ */
 @import 'tailwindcss';
 
 @custom-variant dark (&:where(.dark, .dark *));

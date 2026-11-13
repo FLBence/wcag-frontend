@@ -1,10 +1,13 @@
 import { RenderMode, ServerRoute } from '@angular/ssr';
 
+/*
+ * A szerveroldali renderelés útvonalankénti konfigurációja.
+ *
+ * Meghatározza, hogy az egyes útvonalak kliensoldali rendereléssel vagy előzetes rendereléssel jelenjenek meg.
+ *
+ * Felhasznált forrás: https://angular.dev/api/ssr/RenderMode
+ */
 export const serverRoutes: ServerRoute[] = [
-  {
-    path: '**',
-    renderMode: RenderMode.Prerender,
-  },
   {
     path: ':id/results',
     renderMode: RenderMode.Client,
@@ -12,5 +15,9 @@ export const serverRoutes: ServerRoute[] = [
   {
     path: 'users/:id/myscans',
     renderMode: RenderMode.Client,
+  },
+  {
+    path: '**',
+    renderMode: RenderMode.Prerender,
   },
 ];

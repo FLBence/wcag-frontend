@@ -4,6 +4,12 @@ import { RegisterDto } from '../../models/register-dto';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 
+/*
+ * A felhasználói regisztrációhoz kapcsolódó műveletek kezelése.
+ *
+ * A komponens kezeli a regisztrációs adatokat, meghívja az AuthService regisztrációs metódusát, valamint megjeleníti
+ * a művelet eredményéhez kapcsolódó visszajelzéseket.
+ */
 @Component({
   imports: [FormsModule],
   selector: 'app-register',
@@ -22,10 +28,19 @@ export class Register {
   protected successMessage = signal('');
   protected registered = signal(false);
 
+  /*
+   * A jelszó láthatóságának váltása.
+   */
   togglePasswordVisibility(): void {
     this.isPasswordVisible.update((value) => !value);
   }
 
+  /*
+   * Új felhasználó regisztrálása a megadott adatok alapján.
+   *
+   * Összeállítja a regisztrációhoz szükséges adatokat, meghívja az AuthService regisztrációs metódusát,
+   * majd kezeli a sikeres műveletet vagy az esetlegesen fellépő hibát.
+   */
   onRegister(): void {
     const registerDto: RegisterDto = {
       username: this.username(),
@@ -50,6 +65,9 @@ export class Register {
     });
   }
 
+  /*
+   * Navigáció a bejelentkezési oldalra.
+   */
   protected redirectToLogin(): void {
     this.router.navigate(['/auth/login']);
   }

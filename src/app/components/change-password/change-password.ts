@@ -4,6 +4,12 @@ import { LoginDto } from '../../models/login-dto';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 
+/*
+ * Jelszómódosításhoz kapcsolódó felhasználói műveletek kezelése.
+ *
+ * A komponens fogadja a jelszómódosításhoz szükséges adatokat, kezeli a művelet eredményét és a kapcsolódó visszajelzéseket,
+ * valamint sikeres módosítás után lehetőséget biztosít a bejelentkezési oldalra történő navigációra.
+ */
 @Component({
   imports: [FormsModule],
   selector: 'app-change-password',
@@ -22,6 +28,12 @@ export class ChangePassword {
   private isPasswordVisible = signal(false);
   protected changed = signal(false);
 
+  /*
+   * A felhasználó jelszavának módosítása.
+   *
+   * Összeállítja a szükséges adatokat, meghívja az AuthService jelszómódosító metódusát, majd kezeli a sikeres műveletet
+   * vagy az esetlegesen fellépő hibát.
+   */
   protected changePassword(): void {
     this.isLoading.set(true);
 
@@ -47,10 +59,16 @@ export class ChangePassword {
     });
   }
 
+  /*
+   * A jelszó láthatóságának váltása.
+   */
   protected togglePasswordVisibility(): void {
     this.isPasswordVisible.update((value) => !value);
   }
 
+  /*
+   * Navigáció a bejelentkezési oldalra.
+   */
   protected redirectToLogin(): void {
     this.router.navigate(['/auth/login']);
   }

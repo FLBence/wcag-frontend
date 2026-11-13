@@ -4,6 +4,12 @@ import { RouterOutlet } from '@angular/router';
 import { ThemeService } from './services/theme-service';
 import { Navbar } from './components/navbar/navbar';
 
+/*
+ * Az alkalmazás gyökérkomponense.
+ *
+ * Betölti a navigációs sávot és az aktuális útvonalhoz tartozó tartalmat, valamint biztosítja a megjelenítési
+ *  téma állapotának elérését és módosítását.
+ */
 @Component({
   imports: [CommonModule, RouterOutlet, Navbar],
   selector: 'app-root',
@@ -14,17 +20,16 @@ export class App {
   protected readonly title = signal('wcag-frontend');
   private themeService = inject(ThemeService);
 
-  selectedScanId: number | null = null;
-
-  onScanStarted(scanId: number) {
-    this.selectedScanId = scanId;
-    console.log('Új szkennelés indult, generált Scan ID:', scanId);
-  }
-
+  /*
+   * Az alkalmazás aktuális témabeállításának lekérdezése a ThemeService segítségével.
+   */
   get isDarkMode() {
     return this.themeService.isDarkMode;
   }
 
+  /*
+   * Az alkalmazás megjelenítési témájának váltása.
+   */
   toggleTheme(): void {
     this.themeService.toggleTheme();
   }

@@ -7,6 +7,11 @@ import { MyScans } from './components/my-scans/my-scans';
 import { authGuard } from './guards/auth-guard';
 import { ChangePassword } from './components/change-password/change-password';
 
+/*
+ * Az alkalmazás útvonalainak konfigurációja.
+ *
+ * Meghatározza az egyes oldalakhoz tartozó komponenseket, valamint a hitelesítést igénylő útvonalak hozzáférési feltételeit.
+ */
 export const routes: Routes = [
   {
     path: '',
