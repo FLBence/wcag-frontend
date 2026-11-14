@@ -13,7 +13,10 @@ import { ScanResponseDto } from '../models/scan-response-dto';
 })
 export class UserApiService {
   private httpClient = inject(HttpClient);
-  private baseUrl = 'http://localhost:8080/api/users';
+  private baseUrl =
+    (window.location.hostname === 'localhost'
+      ? 'http://localhost:8080/api'
+      : 'https://wcag-backend-d8jq.onrender.com/api') + '/auth';
 
   /*
    * A bejelentkezett felhasználó korábbi WCAG vizsgálatainak lekérdezése.

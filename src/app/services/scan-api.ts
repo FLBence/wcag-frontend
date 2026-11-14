@@ -18,7 +18,10 @@ import { AiSuggestionDto } from '../models/ai-suggestion-dto';
 })
 export class ScanApiService {
   private httpClient = inject(HttpClient);
-  private baseUrl = 'http://localhost:8080/api/scans';
+  private baseUrl =
+    (window.location.hostname === 'localhost'
+      ? 'http://localhost:8080/api'
+      : 'https://wcag-backend-d8jq.onrender.com/api') + '/scans';
 
   /*
    * Új WCAG vizsgálat létrehozásának kezdeményezése a backend felé.

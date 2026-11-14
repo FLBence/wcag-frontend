@@ -5,6 +5,7 @@ import { Observable, Subscription, timer } from 'rxjs';
 import { LoginDto } from '../models/login-dto';
 import { isPlatformBrowser } from '@angular/common';
 import { Router } from '@angular/router';
+import { environment } from '../enviorments/enviorment';
 
 /*
  * A felhasználói hitelesítéshez kapcsolódó műveletek kezelése.
@@ -17,7 +18,10 @@ import { Router } from '@angular/router';
 })
 export class AuthService {
   private httpClient = inject(HttpClient);
-  private baseUrl = 'http://localhost:8080/api/auth';
+  private baseUrl =
+    (window.location.hostname === 'localhost'
+      ? 'http://localhost:8080/api'
+      : 'https://wcag-backend-d8jq.onrender.com/api') + '/auth';
   private platformId = inject(PLATFORM_ID);
   private router = inject(Router);
 
