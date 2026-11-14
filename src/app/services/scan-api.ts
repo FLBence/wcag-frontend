@@ -6,6 +6,7 @@ import { ScanResponseDto } from '../models/scan-response-dto';
 import { ScanResultResponseDto } from '../models/scan-result-response-dto';
 import { CreateScanRequestDto } from '../models/create-scan-request-dto';
 import { AiSuggestionDto } from '../models/ai-suggestion-dto';
+import { environment } from '../enviorments/enviorment';
 
 /*
  * A WCAG vizsgálatokhoz kapcsolódó HTTP kérések kezelése.
@@ -21,7 +22,7 @@ export class ScanApiService {
   private baseUrl =
     (window.location.hostname === 'localhost'
       ? 'http://localhost:8080/api'
-      : 'https://wcag-backend-d8jq.onrender.com/api') + '/scans';
+      : `${environment.apiUrl}`) + '/scans';
 
   /*
    * Új WCAG vizsgálat létrehozásának kezdeményezése a backend felé.
@@ -63,7 +64,7 @@ export class ScanApiService {
    * Felhasznált forrás: https://www.learnrxjs.io/learn-rxjs/operators/filtering/takewhile
    */
   currentScanStatus(scanId: number): Observable<ScanResponseDto> {
-    return timer(0, 1000).pipe(
+    return timer(0, 3000).pipe(
       switchMap(() => this.getScanStatus(scanId)),
       takeWhile(
         (scan) => scan.status === ScanStatus.PENDING || scan.status === ScanStatus.IN_PROGRESS,

@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ScanResponseDto } from '../models/scan-response-dto';
+import { environment } from '../enviorments/enviorment';
 
 /*
  * A felhasználókhoz kapcsolódó API-kérések kezelése.
@@ -16,7 +17,7 @@ export class UserApiService {
   private baseUrl =
     (window.location.hostname === 'localhost'
       ? 'http://localhost:8080/api'
-      : 'https://wcag-backend-d8jq.onrender.com/api') + '/auth';
+      : `${environment.apiUrl}`) + '/auth';
 
   /*
    * A bejelentkezett felhasználó korábbi WCAG vizsgálatainak lekérdezése.

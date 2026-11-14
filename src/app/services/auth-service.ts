@@ -21,7 +21,7 @@ export class AuthService {
   private baseUrl =
     (window.location.hostname === 'localhost'
       ? 'http://localhost:8080/api'
-      : 'https://wcag-backend-d8jq.onrender.com/api') + '/auth';
+      : `${environment.apiUrl}`) + '/auth';
   private platformId = inject(PLATFORM_ID);
   private router = inject(Router);
 
