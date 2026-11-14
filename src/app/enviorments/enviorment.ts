@@ -3,5 +3,5 @@
  */
 export const environment = {
   production: true,
-  apiUrl: 'https://wcag-backend-d8jq.onrender.com/api',
+  apiUrl: 'https://wcag-backend-323612018168.europe-west3.run.app',
 };
